@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Example</title>
+
+    <style>
+       
+
+        
+
+        .container{
+            display:grid;
+            width:700px;
+            grid-template-columns:repeat(4,1fr);
+            grid-template-rows:repeat(4,120px);
+            gap:10px;
+            background: linear-gradient(black,white,blue,yellow);
+
+            grid-template-areas:
+                "box1 box1 box2 box3"
+                "box1 box1 box4 box5"
+                "box6 box7 box4 box8"
+                "box6 box9 box9 box8";
+        }
+
+        .box{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:rgb(165, 47, 47);
+            background:#2d5c63;
+            border-radius:10px;
+        }
+
+    
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="box box1" style="grid-area:box1">1</div>
+    <div class="box box2" style="grid-area:box2">2</div>
+    <div class="box box3" style="grid-area:box3">3</div>
+    <div class="box box4" style="grid-area:box4">4</div>
+    <div class="box box5" style="grid-area:box5">5</div>
+    <div class="box box6" style="grid-area:box6">6</div>
+    <div class="box box7" style="grid-area:box7">7</div>
+    <div class="box box8" style="grid-area:box8">8</div>
+    <div class="box box9" style="grid-area:box9">9</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        page: '#F1F5F9',
+                        sidebar: '#0F172A',
+                        active: '#4F46E5',
+                        heading: '#0F172A',
+                        body: '#64748B',
+                        border: '#E2E8F0',
+                        success: '#16A34A',
+                        danger: '#DC2626',
+                        warning: '#D97706'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-page text-heading font-['Inter']">
+
+<div class="min-h-screen flex">
+
+   
+    <aside id="sidebar"
+        class="fixed lg:sticky top-0 left-0 z-50 w-[240px] h-screen bg-sidebar text-slate-300 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+
+        <div class="h-16 flex items-center px-6 border-b border-slate-700">
+            <h1 class="text-xl font-bold text-white">AdminPanel</h1>
+        </div>
+
+        <nav class="p-4 space-y-2 text-sm font-medium">
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-active text-white">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800">
+                <span>👥</span>
+                Users
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800">
+                <span>🛒</span>
+                Orders
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800">
+                <span>📈</span>
+                Analytics
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800">
+                <span>⚙️</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="absolute bottom-0 w-full p-4">
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800">
+                <div class="w-9 h-9 rounded-full bg-active flex items-center justify-center text-white font-bold">
+                    A
+                </div>
+
+                <div>
+                    <p class="text-white text-sm font-semibold">Admin User</p>
+                    <p class="text-slate-400 text-xs">Administrator</p>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- Overlay -->
+    <div id="overlay"
+        class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden"
+        onclick="toggleSidebar()">
+    </div>
+
+
+    <!-- Main -->
+    <div class="flex-1 min-w-0">
+
+        <!-- Header -->
+        <header class="h-16 bg-white border-b border-border flex items-center justify-between px-4 md:px-8 sticky top-0 z-30">
+
+            <div class="flex items-center gap-4">
+
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden text-2xl">
+                    ☰
+                </button>
+
+                <h2 class="text-2xl font-bold">
+                    Dashboard
+                </h2>
+
+            </div>
+
+            <div class="flex items-center gap-4">
+
+                <button class="relative text-xl">
+                    🔔
+                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+
+                <div class="hidden sm:flex items-center gap-2">
+                    <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center text-active font-bold">
+                        A
+                    </div>
+
+                    <span class="text-sm font-medium">
+                        Admin
+                    </span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Content -->
+        <main class="p-4 md:p-8">
+
+            <!-- KPI Cards -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+
+                <div class="bg-white border border-border rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <p class="text-body text-sm font-medium">Total Revenue</p>
+                        <span class="text-xl">💰</span>
+                    </div>
+
+                    <h3 class="text-[28px] font-bold mt-3">
+                        $48,295
+                    </h3>
+
+                    <p class="text-success text-sm mt-2">
+                        ↑ 12.5% this month
+                    </p>
+                </div>
+
+
+                <div class="bg-white border border-border rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <p class="text-body text-sm font-medium">Total Users</p>
+                        <span class="text-xl">👥</span>
+                    </div>
+
+                    <h3 class="text-[28px] font-bold mt-3">
+                        24,892
+                    </h3>
+
+                    <p class="text-success text-sm mt-2">
+                        ↑ 8.2% this month
+                    </p>
+                </div>
+
+
+                <div class="bg-white border border-border rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <p class="text-body text-sm font-medium">Total Orders</p>
+                        <span class="text-xl">🛒</span>
+                    </div>
+
+                    <h3 class="text-[28px] font-bold mt-3">
+                        8,642
+                    </h3>
+
+                    <p class="text-danger text-sm mt-2">
+                        ↓ 2.4% this month
+                    </p>
+                </div>
+
+
+                <div class="bg-white border border-border rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <p class="text-body text-sm font-medium">Conversion Rate</p>
+                        <span class="text-xl">📈</span>
+                    </div>
+
+                    <h3 class="text-[28px] font-bold mt-3">
+                        4.68%
+                    </h3>
+
+                    <p class="text-success text-sm mt-2">
+                        ↑ 1.3% this month
+                    </p>
+                </div>
+
+            </section>
+
+
+            <!-- Revenue + Orders -->
+            <section class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mb-6">
+
+                <!-- Revenue Chart -->
+                <div class="bg-white border border-border rounded-xl p-5">
+
+                    <div class="flex justify-between items-center mb-6">
+
+                        <div>
+                            <h3 class="text-base font-semibold">
+                                Revenue Overview
+                            </h3>
+
+                            <p class="text-sm text-body mt-1">
+                                Monthly revenue performance
+                            </p>
+                        </div>
+
+                        <select class="border border-border rounded-lg px-3 py-2 text-sm">
+                            <option>Last 6 Months</option>
+                            <option>Last 12 Months</option>
+                        </select>
+
+                    </div>
+
+                    <div class="h-64 flex items-end gap-4">
+
+                        <div class="flex-1 bg-indigo-200 rounded-t-lg h-[35%]"></div>
+                        <div class="flex-1 bg-indigo-300 rounded-t-lg h-[50%]"></div>
+                        <div class="flex-1 bg-indigo-400 rounded-t-lg h-[42%]"></div>
+                        <div class="flex-1 bg-indigo-500 rounded-t-lg h-[68%]"></div>
+                        <div class="flex-1 bg-indigo-600 rounded-t-lg h-[58%]"></div>
+                        <div class="flex-1 bg-active rounded-t-lg h-[85%]"></div>
+
+                    </div>
+
+                    <div class="flex justify-between text-xs text-body mt-3">
+                        <span>Apr</span>
+                        <span>May</span>
+                        <span>Jun</span>
+                        <span>Jul</span>
+                        <span>Aug</span>
+                        <span>Sep</span>
+                    </div>
+
+                </div>
+
+
+                <!-- Recent Orders -->
+                <div class="bg-white border border-border rounded-xl p-5">
+
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="text-base font-semibold">
+                            Recent Orders
+                        </h3>
+
+                        <a href="#" class="text-active text-sm font-medium">
+                            View all
+                        </a>
+                    </div>
+
+                    <div class="space-y-5">
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium">#ORD-1045</p>
+                                <p class="text-xs text-body">John Smith</p>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-sm font-semibold">$249</p>
+                                <span class="text-xs text-success">Completed</span>
+                            </div>
+                        </div>
+
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium">#ORD-1044</p>
+                                <p class="text-xs text-body">Sarah Wilson</p>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-sm font-semibold">$189</p>
+                                <span class="text-xs text-warning">Pending</span>
+                            </div>
+                        </div>
+
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium">#ORD-1043</p>
+                                <p class="text-xs text-body">Mike Brown</p>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-sm font-semibold">$420</p>
+                                <span class="text-xs text-success">Completed</span>
+                            </div>
+                        </div>
+
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium">#ORD-1042</p>
+                                <p class="text-xs text-body">Emily Davis</p>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-sm font-semibold">$315</p>
+                                <span class="text-xs text-danger">Cancelled</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Traffic + Products -->
+            <section class="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6">
+
+                <!-- Traffic -->
+                <div class="bg-white border border-border rounded-xl p-5">
+
+                    <h3 class="text-base font-semibold mb-6">
+                        Traffic Sources
+                    </h3>
+
+                    <div class="space-y-5">
+
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Organic Search</span>
+                                <span class="font-medium">42%</span>
+                            </div>
+
+                            <div class="h-2 bg-slate-100 rounded-full">
+                                <div class="h-2 bg-active rounded-full w-[42%]"></div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Direct</span>
+                                <span class="font-medium">28%</span>
+                            </div>
+
+                            <div class="h-2 bg-slate-100 rounded-full">
+                                <div class="h-2 bg-indigo-400 rounded-full w-[28%]"></div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Social Media</span>
+                                <span class="font-medium">18%</span>
+                            </div>
+
+                            <div class="h-2 bg-slate-100 rounded-full">
+                                <div class="h-2 bg-indigo-300 rounded-full w-[18%]"></div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Referral</span>
+                                <span class="font-medium">12%</span>
+                            </div>
+
+                            <div class="h-2 bg-slate-100 rounded-full">
+                                <div class="h-2 bg-indigo-200 rounded-full w-[12%]"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Top Products -->
+                <div class="bg-white border border-border rounded-xl p-5">
+
+                    <div class="flex justify-between items-center mb-5">
+
+                        <h3 class="text-base font-semibold">
+                            Top Products
+                        </h3>
+
+                        <button class="text-active text-sm font-medium">
+                            View all
+                        </button>
+
+                    </div>
+
+                    <div class="overflow-x-auto">
+
+                        <table class="w-full min-w-[500px] text-sm">
+
+                            <thead>
+                                <tr class="border-b border-border text-body">
+                                    <th class="text-left pb-3 font-medium">
+                                        Product
+                                    </th>
+
+                                    <th class="text-left pb-3 font-medium">
+                                        Sales
+                                    </th>
+
+                                    <th class="text-left pb-3 font-medium">
+                                        Revenue
+                                    </th>
+
+                                    <th class="text-left pb-3 font-medium">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr class="border-b border-border">
+                                    <td class="py-4 font-medium">
+                                        Pro Plan
+                                    </td>
+
+                                    <td class="py-4">
+                                        1,245
+                                    </td>
+
+                                    <td class="py-4">
+                                        $24,900
+                                    </td>
+
+                                    <td class="py-4 text-success">
+                                        Active
+                                    </td>
+                                </tr>
+
+
+                                <tr class="border-b border-border">
+                                    <td class="py-4 font-medium">
+                                        Starter Plan
+                                    </td>
+
+                                    <td class="py-4">
+                                        982
+                                    </td>
+
+                                    <td class="py-4">
+                                        $14,730
+                                    </td>
+
+                                    <td class="py-4 text-success">
+                                        Active
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td class="py-4 font-medium">
+                                        Enterprise
+                                    </td>
+
+                                    <td class="py-4">
+                                        342
+                                    </td>
+
+                                    <td class="py-4">
+                                        $12,540
+                                    </td>
+
+                                    <td class="py-4 text-warning">
+                                        Limited
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    sidebar.classList.toggle("-translate-x-full");
+    overlay.classList.toggle("hidden");
+}
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    p{ font-size: 20px;
+
+    }
+    p:has(span){
+        color:purple
+    }
+    p:nth-child(odd){
+        color:yellow;
+    }
+    p:nth-child(even){
+        color:blue;
+    }
+    p:nth-child(8){
+        color: red;
+        font-family: monospace;
+    }
+    :is(h1,h2){
+        color: pink;
+    
+
+    }
+                    
+ 
+
+        </style>
+</head>
+<body>
+    <p>Para 1</p>
+    <p>para 2</p>
+    <p>para 3</p>
+    <p>para 4</p>
+    <p>para 5</p>
+    <p>para 6</p>
+    <p>para <span>7</span></p>
+
+
+    <div>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+    </div>
+</body>
+</html>

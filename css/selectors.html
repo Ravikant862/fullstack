@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <Style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    h2{
+        color: red;
+    }
+    input[type=email]{
+        border-radius:15px;
+        
+    }
+    li[data=mydata]{
+        background:blue ;
+    }
+    #myid{
+        color: yellow;
+
+    }
+    .me{
+        font-family: sans-serif ;
+    }
+    section h2{
+        color: beige;
+
+    }
+    section>h2{
+        color: blueviolet;
+    }
+    h2+p{
+        color: green;
+    }
+    h2-p{
+        font-size: large;
+    }
+    button:active{
+        background-color:yellow ;
+        color: black;}
+
+    button:hover{
+        background-color:black ;
+        color: white;
+    }
+    a:link{
+        color: green;
+    }
+    a:visited{
+        color: grey;
+    }
+
+    input{
+        border-width: 0px 0px 2px 0px;
+        margin: 3%;
+
+    }
+    input:focus{
+        border-color: red;
+
+    }
+    input:required{
+        border-color:red;
+    }
+    input:optional{
+        border-color: green
+        ;
+    }
+    input:disabled{
+        border-width: 0px        ;
+        background: grey;
+        color: white;
+        
+    
+        
+    }
+    input:enabled{
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    input:out-of-range{
+        color:red;
+        border-color: black;
+
+    }
+    input:invalid{
+        color: red;
+    }
+
+
+
+
+
+
+
+        </Style>
+</head>
+<body>
+    <h2>Selectors</h2>
+    <li data="mydata">UNIVERSAL</li>
+    <ul>
+    <LI id="myid">ID</LI>
+    <LI class="me">CLASS</LI>
+    <LI class="me">ATTRIBUTE</LI>
+    <LI>ELEMENT</LI>
+    <LI>COMBINATION</LI>
+    <LI>PSEUDO CLASS</LI>
+    <LI>PSEUDO ELEMENT</LI></ul>
+    
+    <section>
+        <h2>Heading1 </h2>
+        <p></p>
+        <p>paragraph</p>
+        <div>
+            <h2>Heading2</h2>
+        </div>
+    </section>
+
+
+
+
+
+
+    <button>Click Here</button>
+    <a href="#3">Link</a>
+
+    /* User interactive and link pseudo class
+      focus
+      visited
+      link
+      active
+      hover
+    
+    */
+    /* 
+    disabled
+    required
+    optional
+    in-range
+    out-of-range
+    checked
+    read-only
+    read-write
+    placeholder-shown
+    
+    
+    */
+    <input type="text" placeholder="First Name" required/> <br>
+    <input type="text" placeholder="Middle Name"/><br>
+    <input type="text" placeholder="Last Name" required/><br>
+    <input type="text" value="mathura" disabled/><br>\
+    <input type="number" min="10" max="100"/><br>
+    <input type="email" placeholder="Email"/><br>
+    <input type="text" value="gla" readonly/>
+    
+</body>
+</html>
