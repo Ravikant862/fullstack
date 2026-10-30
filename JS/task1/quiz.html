@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Quiz Arena</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .header-info {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .timer {
+      font-size: 16px;
+      font-weight: bold;
+      color: #d9534f;
+      background: #ffe6e6;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .question {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #222;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      padding: 12px 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: #eef2f5;
+      border-color: #bbb;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724;
+    }
+
+    .option-btn.incorrect {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24;
+    }
+
+    .explanation {
+      margin-top: 16px;
+      padding: 12px;
+      background-color: #e8f4f8;
+      border-left: 4px solid #17a2b8;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #0c5460;
+      display: none;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    .btn-next { background-color: #007bff; }
+    .btn-next:hover { background-color: #0056b3; }
+    .btn-restart { background-color: #6c757d; }
+    .btn-restart:hover { background-color: #5a6268; }
+    .btn-review { background-color: #17a2b8; }
+    .btn-review:hover { background-color: #117a8b; }
+
+    .btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .result-screen {
+      text-align: center;
+    }
+
+    .result-score {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 16px 0;
+    }
+
+    .rating-msg {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    .review-item {
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+    }
+
+    .review-item p {
+      margin: 4px 0;
+    }
+
+    .text-success { color: #28a745; font-weight: bold; }
+    .text-danger { color: #dc3545; font-weight: bold; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <!-- Active Quiz Screen -->
+    <div id="quiz-screen">
+      <div class="header">
+        <div class="header-info">
+          <span id="progress-text">Q 1/3</span> | Score: <span id="score-text">0</span>
+        </div>
+        <div class="timer" id="timer-text">Time: 30s</div>
+      </div>
+
+      <div class="question" id="question-text">Question loading...</div>
+
+      <div class="options" id="options-container"></div>
+
+      <div class="explanation" id="explanation-box"></div>
+
+      <div class="footer">
+        <button class="btn btn-restart" id="restart-btn" onclick="restartQuiz()">Restart</button>
+        <button class="btn btn-next" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- Results / End Screen -->
+    <div id="result-screen" class="result-screen hidden">
+      <h2>Quiz Completed!</h2>
+      <div class="result-score" id="final-score"></div>
+      <div class="rating-msg" id="rating-msg"></div>
+
+      <div id="review-section" class="hidden">
+        <h3>Wrong Answers Review</h3>
+        <div id="review-list"></div>
+      </div>
+
+      <div style="margin-top: 24px; display: flex; gap: 10px; justify-content: center;">
+        <button class="btn btn-review" id="review-btn" onclick="showReview()">Review Wrong Answers</button>
+        <button class="btn btn-restart" onclick="restartQuiz()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample Questions Data
+    const questions = [
+      {
+        question: "Which keyword is used to declare a constant variable in JavaScript?",
+        options: ["var", "let", "const", "static"],
+        correctIndex: 2,
+        explanation: "'const' is used to define variables whose value cannot be reassigned."
+      },
+      {
+        question: "What is the result of '2' + 2 in JavaScript?",
+        options: ["4", "22", "NaN", "TypeError"],
+        correctIndex: 1,
+        explanation: "The + operator performs string concatenation when one operand is a string."
+      },
+      {
+        question: "Which method removes the last element from an array?",
+        options: ["pop()", "push()", "shift()", "slice()"],
+        correctIndex: 0,
+        explanation: "'pop()' removes and returns the last element from an array."
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timerInterval = null;
+    let timeLeft = 30;
+    let wrongAnswers = [];
+
+    // DOM Elements
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const progressText = document.getElementById('progress-text');
+    const scoreText = document.getElementById('score-text');
+    const timerText = document.getElementById('timer-text');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const explanationBox = document.getElementById('explanation-box');
+    const nextBtn = document.getElementById('next-btn');
+    const finalScore = document.getElementById('final-score');
+    const ratingMsg = document.getElementById('rating-msg');
+    const reviewBtn = document.getElementById('review-btn');
+    const reviewSection = document.getElementById('review-section');
+    const reviewList = document.getElementById('review-list');
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      wrongAnswers = [];
+      scoreText.textContent = score;
+      quizScreen.classList.remove('hidden');
+      resultScreen.classList.add('hidden');
+      reviewSection.classList.add('hidden');
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      resetState();
+
+      const currentQuestion = questions[currentQuestionIndex];
+      progressText.textContent = `Q ${currentQuestionIndex + 1}/${questions.length}`;
+      questionText.textContent = currentQuestion.question;
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.classList.add('option-btn');
+        btn.textContent = optText;
+        btn.onclick = () => selectOption(index);
+        optionsContainer.appendChild(btn);
+      });
+
+      startTimer();
+    }
+
+    function resetState() {
+      clearInterval(timerInterval);
+      timeLeft = 30;
+      timerText.textContent = `Time: ${timeLeft}s`;
+      explanationBox.style.display = 'none';
+      explanationBox.textContent = '';
+      nextBtn.disabled = true;
+      optionsContainer.innerHTML = '';
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerText.textContent = `Time: ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          handleTimeout();
+        }
+      }, 1000);
+    }
+
+    function selectOption(selectedIndex) {
+      clearInterval(timerInterval);
+
+      const currentQuestion = questions[currentQuestionIndex];
+      const optionButtons = optionsContainer.children;
+
+      // Lock all option buttons
+      for (let btn of optionButtons) {
+        btn.disabled = true;
+      }
+
+      if (selectedIndex === currentQuestion.correctIndex) {
+        optionButtons[selectedIndex].classList.add('correct');
+        score++;
+        scoreText.textContent = score;
+      } else {
+        optionButtons[selectedIndex].classList.add('incorrect');
+        optionButtons[currentQuestion.correctIndex].classList.add('correct');
+
+        // Track wrong answer
+        wrongAnswers.push({
+          question: currentQuestion.question,
+          userAnswer: currentQuestion.options[selectedIndex],
+          correctAnswer: currentQuestion.options[currentQuestion.correctIndex],
+          explanation: currentQuestion.explanation
+        });
+      }
+
+      // Show explanation
+      explanationBox.textContent = `Explanation: ${currentQuestion.explanation}`;
+      explanationBox.style.display = 'block';
+
+      nextBtn.disabled = false;
+    }
+
+    function handleTimeout() {
+      const currentQuestion = questions[currentQuestionIndex];
+      const optionButtons = optionsContainer.children;
+
+      for (let btn of optionButtons) {
+        btn.disabled = true;
+      }
+
+      // Reveal correct answer
+      optionButtons[currentQuestion.correctIndex].classList.add('correct');
+
+      // Track as wrong due to timeout
+      wrongAnswers.push({
+        question: currentQuestion.question,
+        userAnswer: "Timed Out",
+        correctAnswer: currentQuestion.options[currentQuestion.correctIndex],
+        explanation: currentQuestion.explanation
+      });
+
+      explanationBox.textContent = `Time's up! Explanation: ${currentQuestion.explanation}`;
+      explanationBox.style.display = 'block';
+
+      nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      quizScreen.classList.add('hidden');
+      resultScreen.classList.remove('hidden');
+
+      finalScore.textContent = `Your Score: ${score} / ${questions.length}`;
+
+      // Rating Message logic
+      const percentage = (score / questions.length) * 100;
+      if (percentage === 100) {
+        ratingMsg.textContent = "Outstanding! Perfect Score! 🏆";
+      } else if (percentage >= 60) {
+        ratingMsg.textContent = "Great job! Keep practicing! 👍";
+      } else {
+        ratingMsg.textContent = "Don't give up! Give it another try! 💪";
+      }
+
+      // Hide review button if no wrong answers
+      if (wrongAnswers.length === 0) {
+        reviewBtn.classList.add('hidden');
+      } else {
+        reviewBtn.classList.remove('hidden');
+      }
+    }
+
+    function showReview() {
+      reviewList.innerHTML = '';
+      wrongAnswers.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.classList.add('review-item');
+        div.innerHTML = `
+          <p><strong>Q${idx + 1}: ${item.question}</strong></p>
+          <p>Your answer: <span class="text-danger">${item.userAnswer}</span></p>
+          <p>Correct answer: <span class="text-success">${item.correctAnswer}</span></p>
+          <p><em>${item.explanation}</em></p>
+        `;
+        reviewList.appendChild(div);
+      });
+      reviewSection.classList.remove('hidden');
+    }
+
+    function restartQuiz() {
+      startQuiz();
+    }
+
+    // Initialize application on load
+    startQuiz();
+  </script>
+</body>
+</html>

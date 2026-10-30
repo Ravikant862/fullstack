@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Guessing Game</title>
+</head>
+<body>
+    <h2>Guess the Number (1-100)</h2>
+
+    <input type="number" id="guess" placeholder="Enter your guess">
+    <button onclick="checkGuess()">Guess</button>
+
+    <p id="message"></p>
+    <p id="attempts">Attempts left: 7</p>
+    <p id="score"></p>
+
+    <script>
+        let number = Math.floor(Math.random() * 100) + 1;
+        let attempts = 7;
+        let gameOver = false;
+
+        function checkGuess() {
+            if (gameOver) return;
+
+            let guess = Number(document.getElementById("guess").value);
+            let message = document.getElementById("message");
+
+            if (guess < 1 || guess > 100 ||
+                document.getElementById("guess").value === "") {
+                message.innerText = "Enter a number between 1 and 100!";
+                return;
+            }
+
+            attempts--;
+
+            if (guess === number) {
+                message.innerText = "Correct! You guessed the number.";
+                document.getElementById("score").innerText =
+                    "Your score: " + attempts * 10;
+                gameOver = true;
+            } else if (attempts === 0) {
+                message.innerText = "Game Over! Number was " + number;
+                document.getElementById("score").innerText =
+                    "Your score: 0";
+                gameOver = true;
+            } else if (guess < number) {
+                message.innerText = "Too low! Try a higher number.";
+            } else {
+                message.innerText = "Too high! Try a lower number.";
+            }
+
+            document.getElementById("attempts").innerText =
+                "Attempts left: " + attempts;
+        }
+    </script>
+</body>
+</html>
